@@ -26,7 +26,7 @@ const JsonInput = ({ onSubmit, onGetOperationCode }) => {
       setError(null);
 
       // Make API call
-      const response = await axios.post('http://localhost:7878/bfhl', parsedData, {
+      const response = await axios.post('https://ayush-bajaj-finserv.vercel.app/bfhl', parsedData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -44,7 +44,7 @@ const JsonInput = ({ onSubmit, onGetOperationCode }) => {
       setError(null);
 
       // Make API call
-      const response = await axios.get('http://localhost:7878/bfhl');
+      const response = await axios.get('https://ayush-bajaj-finserv.vercel.app/bfhl');
       onGetOperationCode(response.data); // Call the onGetOperationCode prop function
     } catch (err) {
       // Handle errors
