@@ -1,31 +1,41 @@
+// src/App.js
+
 import React, { useState } from 'react';
-import axios from 'axios';
-import JsonInput from './components/JsonInput.js';
-import OptionsDropdown from './components/OptionDropDown.js';
-import ResponseDisplay from './components/ResponseDisplay.js';
+import JsonInput from './components/JsonInput';
+import OptionsDropdown from './components/OptionDropDown';
+import ResponseDisplay from './components/ResponseDisplay';
 import { Typography } from 'antd';
-// import 'antd/dist/antd.css';
 import './App.css';
-import { Input, Button, message, Select } from 'antd';
 
 const { Title } = Typography;
 
 const App = () => {
   const [response, setResponse] = useState(null);
+  const [operationCode, setOperationCode] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleSubmit = (data) => {
     setResponse(data);
+  };
+
+  const handleGetOperationCode = (data) => {
+    setOperationCode(data.operation_code);
   };
 
   return (
     <div className="app-container">
       <Title>Bajaj Finserv Challenge</Title>
       <div className="site-layout-content">
-          <JsonInput onSubmit={handleSubmit} />
-          {response && (
-            <pre>{JSON.stringify(response, null, 2)}</pre>
-          )}
-        </div>
+        <JsonInput onSubmit={handleSubmit} onGetOperationCode={handleGetOperationCode} />
+        <br></br>
+        <OptionsDropdown selectedOptions={selectedOptions} setSelectedOptions={setSelectedOptions} />
+        <ResponseDisplay response={response} selectedOptions={selectedOptions} />
+        {operationCode !== null && (
+          <div className="operation-code">
+            <p>Operation Code: {operationCode}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

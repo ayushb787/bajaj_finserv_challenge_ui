@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const { TextArea } = Input;
 
-const JsonInput = ({ onSubmit }) => {
+const JsonInput = ({ onSubmit, onGetOperationCode }) => {
   const [jsonInput, setJsonInput] = useState('');
   const [error, setError] = useState(null);
 
@@ -38,6 +38,20 @@ const JsonInput = ({ onSubmit }) => {
     }
   };
 
+  const handleGetOperationCode = async () => {
+    try {
+      // Clear previous errors
+      setError(null);
+
+      // Make API call
+      const response = await axios.get('http://localhost:7878/bfhl');
+      onGetOperationCode(response.data); // Call the onGetOperationCode prop function
+    } catch (err) {
+      // Handle errors
+      setError(err.message || 'An error occurred');
+    }
+  };
+
   return (
     <div>
       <TextArea
@@ -46,8 +60,11 @@ const JsonInput = ({ onSubmit }) => {
         onChange={handleChange}
         placeholder="Enter JSON here"
       />
-      <Button type="primary" onClick={handleSubmit} style={{ marginTop: '10px' }}>
+      <Button type="primary" onClick={handleSubmit} style={{ marginTop: '10px', marginRight: '10px' }}>
         Submit
+      </Button>
+      <Button type="default" onClick={handleGetOperationCode} style={{ marginTop: '10px' }}>
+        Get Operation Code
       </Button>
       {error && <Alert message="Error" description={error} type="error" showIcon style={{ marginTop: '10px' }} />}
     </div>
